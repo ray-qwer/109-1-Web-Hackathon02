@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Grid_1x1 from '../components/Grid_1x1';
+import Grid_1x1 from './Grid_1x1';
 
 class Grid_9x9 extends Component {
     constructor(props) {

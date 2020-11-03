@@ -26,21 +26,82 @@ class Sudoku extends Component {
         // TODO
 
         // Useful hints:
-        // console.log(row_index, col_index)
-        // console.log(this.state.selectedGrid)
+        console.log(row_index, col_index)
+        this.setState({selectedGrid: {row_index,col_index}})
+        console.log(this.state.selectedGrid)
     }
 
+    checkError(key){
+        var con = this.state.conflicts
+        for(var i =0;i<9;i++){ //fix col
+            if(i !== this.state.selectedGrid.col_index){
+                if(this.state.gridValues[i][this.state.selectedGrid.col_index]===key){
+                    con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
+                    return false;
+                }
+            }
+        }
+        for(var i =0;i<9;i++){ //fix row
+            if(i !== this.state.selectedGrid.row_index){
+                if(this.state.gridValues[this.state.selectedGrid.row_index][i]===key){
+                    con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
+                    return false;
+                }
+            }
+        }
+        //check 9*9
+        const col_offset = this.state.selectedGrid.col_index-this.state.selectedGrid.col_index%3
+        const row_offset = this.state.selectedGrid.row_index-this.state.selectedGrid.row_index%3
+        for(var i =0;i<3;i++){
+            for(var j = 0;j<3;j++){
+                if((i+row_offset)!==this.state.selectedGrid.row_index&&(j+col_offset)!==this.state.selectedGrid.col_index){
+                    if(this.state.gridValues[i+row_offset][j+col_offset]===key){
+                        var find = con.indexOf({row_index:i+row_offset,col_index:j+col_offset})
+                        if(find===-1)
+                            con.push({row_index:i+row_offset,col_index:j+col_offset})
+                        return false;
+                    }
+                }
+            }
+        }
+        this.console.log(con)
+        this.setState({conflicts:con})
+        return true;
+    }
     handleKeyDownEvent = (event) => {
         // TODO
-
         // Useful hints:
-        // console.log(event)
-        // if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1 && (event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105)) {}
-        // if (this.state.problem.content[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] === "0") {}
+        if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1 && (event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105)) {
+            console.log("content",this.state.problem.content);
+            if (this.state.problem.content[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] === "0") {
+                //var num = parseInt(event.key,10);
+                if(this.checkError(event.key)){
+                    var m = this.state.gridValues;
+                    m[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = event.key;
+                    this.setState({gridValues:m})
+                }
+            }
+        }
+        
     }
 
     handleScreenKeyboardInput = (num) => {
         // TODO
+        console.log(num)
+        console.log(this.state.selectedGrid)
+        if(this.state.selectedGrid.row_index!==-1 && this.state.selectedGrid.col_index !== -1){
+            console.log("in 1")
+            if(this.state.problem.content[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index]==="0"){
+                console.log("in 2")
+                var m = this.state.gridValues;
+                if(this.checkError(num.toString())){
+                    m[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = num.toString();
+                this.setState({gridValues:m})
+                console.log("finish")
+                this.checkError();
+                }
+            }
+        }
     }
 
     componentDidMount = () => {
@@ -57,6 +118,7 @@ class Sudoku extends Component {
 
         const problem = await require(`../problems/${name}`)
         if (problem.content !== undefined) {
+            console.log(problem.content)
             let gridValues = [];
             for (let i = 0; i < problem.content.length; i++)
                 gridValues[i] = problem.content[i].slice();
