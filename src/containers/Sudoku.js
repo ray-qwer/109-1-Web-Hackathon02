@@ -56,7 +56,7 @@ class Sudoku extends Component {
             for(var j = 0;j<3;j++){
                 if((i+row_offset)!==this.state.selectedGrid.row_index&&(j+col_offset)!==this.state.selectedGrid.col_index){
                     if(this.state.gridValues[i+row_offset][j+col_offset]===key){
-                        var find = con.indexOf({row_index:i+row_offset,col_index:j+col_offset})
+                        //var find = con.indexOf({row_index:i+row_offset,col_index:j+col_offset})
                         // if(find===-1)
                         //     con.push({row_index:i+row_offset,col_index:j+col_offset})
                         return false;
