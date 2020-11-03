@@ -96,9 +96,9 @@ class Sudoku extends Component {
                 var m = this.state.gridValues;
                 if(this.checkError(num.toString())){
                     m[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = num.toString();
-                this.setState({gridValues:m})
-                console.log("finish")
-                this.checkError();
+                    this.setState({gridValues:m})
+                    console.log("finish")
+                    this.checkError();
                 }
             }
         }
