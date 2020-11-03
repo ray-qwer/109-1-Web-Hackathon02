@@ -27,25 +27,27 @@ class Sudoku extends Component {
 
         // Useful hints:
         console.log(row_index, col_index)
+        if(row_index!==this.state.selectedGrid&&col_index!==this.state.selectedGrid)
+            this.setState({conflicts:[]})
         this.setState({selectedGrid: {row_index,col_index}})
         console.log(this.state.selectedGrid)
     }
 
     checkError(key){
-        var con = this.state.conflicts
+        var con = []
         for(var i =0;i<9;i++){ //fix col
             if(i !== this.state.selectedGrid.col_index){
                 if(this.state.gridValues[i][this.state.selectedGrid.col_index]===key){
-                    // con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
-                    return false;
+                    con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
+
                 }
             }
         }
         for(var i =0;i<9;i++){ //fix row
             if(i !== this.state.selectedGrid.row_index){
                 if(this.state.gridValues[this.state.selectedGrid.row_index][i]===key){
-                    // con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
-                    return false;
+                    con.push({row_index:this.state.selectedGrid.row_index,col_index:i})
+
                 }
             }
         }
@@ -56,17 +58,17 @@ class Sudoku extends Component {
             for(var j = 0;j<3;j++){
                 if((i+row_offset)!==this.state.selectedGrid.row_index&&(j+col_offset)!==this.state.selectedGrid.col_index){
                     if(this.state.gridValues[i+row_offset][j+col_offset]===key){
-                        //var find = con.indexOf({row_index:i+row_offset,col_index:j+col_offset})
-                        // if(find===-1)
-                        //     con.push({row_index:i+row_offset,col_index:j+col_offset})
-                        return false;
+                        var find = con.indexOf({row_index:i+row_offset,col_index:j+col_offset})
+                        if(find===-1)
+                            con.push({row_index:i+row_offset,col_index:j+col_offset})
                     }
                 }
             }
         }
-        // this.console.log(con)
-        // this.setState({conflicts:con})
-        return true;
+        console.log(con)
+        if(con.length===0)  return true;
+        this.setState({conflicts:con})
+        return false;
     }
     handleKeyDownEvent = (event) => {
         // TODO
@@ -80,6 +82,7 @@ class Sudoku extends Component {
                     m[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = event.key;
                     this.setState({gridValues:m})
                 }
+                
             }
         }
         
