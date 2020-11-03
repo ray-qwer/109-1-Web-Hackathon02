@@ -68,6 +68,8 @@ class Sudoku extends Component {
         console.log(con)
         if(con.length===0)  return true;
         this.setState({conflicts:con})
+        this.setState({ gameBoardBorderStyle: "8px solid #E77" });
+        setTimeout(() => { this.setState({ gameBordBoarderStyle: "8px solid #333" }); }, 1000);
         return false;
     }
     handleKeyDownEvent = (event) => {
