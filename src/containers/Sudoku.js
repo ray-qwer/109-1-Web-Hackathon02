@@ -36,7 +36,7 @@ class Sudoku extends Component {
         for(var i =0;i<9;i++){ //fix col
             if(i !== this.state.selectedGrid.col_index){
                 if(this.state.gridValues[i][this.state.selectedGrid.col_index]===key){
-                    con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
+                    // con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
                     return false;
                 }
             }
@@ -44,7 +44,7 @@ class Sudoku extends Component {
         for(var i =0;i<9;i++){ //fix row
             if(i !== this.state.selectedGrid.row_index){
                 if(this.state.gridValues[this.state.selectedGrid.row_index][i]===key){
-                    con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
+                    // con.push({row_index:i,col_index:this.state.selectedGrid.col_index})
                     return false;
                 }
             }
@@ -57,15 +57,15 @@ class Sudoku extends Component {
                 if((i+row_offset)!==this.state.selectedGrid.row_index&&(j+col_offset)!==this.state.selectedGrid.col_index){
                     if(this.state.gridValues[i+row_offset][j+col_offset]===key){
                         var find = con.indexOf({row_index:i+row_offset,col_index:j+col_offset})
-                        if(find===-1)
-                            con.push({row_index:i+row_offset,col_index:j+col_offset})
+                        // if(find===-1)
+                        //     con.push({row_index:i+row_offset,col_index:j+col_offset})
                         return false;
                     }
                 }
             }
         }
-        this.console.log(con)
-        this.setState({conflicts:con})
+        // this.console.log(con)
+        // this.setState({conflicts:con})
         return true;
     }
     handleKeyDownEvent = (event) => {
